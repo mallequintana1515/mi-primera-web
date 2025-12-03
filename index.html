@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portafolio - Mallerli Quintana Correa</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Portafolio de Mallerli Quintana Correa</h1>
+    <nav>
+        <a href="#presentacion">Descripción</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#contacto">Contacto</a>
+    </nav>
+</header>
+
+<!-- ============================
+     SECCIÓN PRESENTACIÓN
+============================== -->
+<section id="presentacion">
+    <h2>Mi foto y descripción</h2>
+
+    <!-- FOTO -->
+    <img id="fotoPreview" class="foto-perfil" alt="Tu foto" style="display:none;">
+
+    <input type="file" id="inputFoto" accept="image/*">
+    <button id="guardarFoto">Guardar foto</button>
+    <button id="quitarFoto">Quitar foto</button>
+
+    <!-- DESCRIPCIÓN -->
+    <h3>Sobre mí</h3>
+    <textarea id="descripcion" placeholder="soy una persona  muy carismaticas  , siempre quiero ir aprendido cada dia y salir adelante.."></textarea>
+    <button id="guardarDescripcion">Guardar descripción</button>
+</section>
+
+<!-- ============================
+     SECCIÓN PROYECTOS
+============================== -->
+<section id="proyectos">
+    <h2>Mis proyectos</h2>
+    <textarea id="proyectosTexto" placeholder="Escribe tus proyectos aquí..."></textarea>
+    <button id="guardarProyectos">Guardar proyectos</button>
+
+    <div id="proyectosGuardados"></div>
+</section>
+
+<!-- ============================
+     SECCIÓN CONTACTO Y CORREO
+============================== -->
+<section id="contacto">
+    <h2>Contacto</h2>
+
+    <!-- CORREO -->
+    <h3>Correo electrónico</h3>
+    <input type="email" id="correo" placeholder="mallequintana1515@gmail.com ...">
+    <button id="guardarCorreo">Guardar correo</button>
+    <p id="correoGuardado"></p>
+
+    <!-- REDES O MENSAJE -->
+    <h3>Otras formas de contacto</h3>
+    <textarea id="contactoTexto" placeholder="malle quintana o 3209147519..."></textarea>
+    <button id="guardarContacto">Guardar contacto</button>
+
+    <p id="contactoGuardado"></p>
+</section>
+
+<script>
+// ==============================
+// FOTO: SUBIR, GUARDAR, QUITAR
+// ==============================
+const inputFoto = document.getElementById("inputFoto");
+const fotoPreview = document.getElementById("fotoPreview");
+
+inputFoto.addEventListener("change", () => {
+    const file = inputFoto.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = e => {
+            fotoPreview.src = e.target.result;
+            fotoPreview.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById("guardarFoto").addEventListener("click", () => {
+    if (fotoPreview.src) {
+        localStorage.setItem("foto", fotoPreview.src);
+        alert("¡Foto guardada!");
+    }
+});
+
+document.getElementById("quitarFoto").addEventListener("click", () => {
+    fotoPreview.src = "";
+    fotoPreview.style.display = "none";
+    localStorage.removeItem("foto");
+    alert("Foto eliminada");
+});
+
+// ==============================
+// GUARDAR DESCRIPCIÓN
+// ==============================
+document.getElementById("guardarDescripcion").addEventListener("click", () => {
+    const texto = document.getElementById("descripcion").value;
+    localStorage.setItem("descripcion", texto);
+    alert("Descripción guardada");
+});
+
+// ==============================
+// GUARDAR PROYECTOS
+// ==============================
+document.getElementById("guardarProyectos").addEventListener("click", () => {
+    const texto = document.getElementById("proyectosTexto").value;
+    localStorage.setItem("proyectos", texto);
+    document.getElementById("proyectosGuardados").innerHTML = texto.replace(/\n/g, "<br>");
+    alert("Proyectos guardados");
+});
+
+// ==============================
+// GUARDAR CONTACTO
+// ==============================
+document.getElementById("guardarContacto").addEventListener("click", () => {
+    const texto = document.getElementById("contactoTexto").value;
+    localStorage.setItem("contacto", texto);
+    document.getElementById("contactoGuardado").textContent = texto;
+    alert("Contacto guardado");
+});
+
+// ==============================
+// GUARDAR CORREO
+// ==============================
+document.getElementById("guardarCorreo").addEventListener("click", () => {
+    const correo = document.getElementById("correo").value;
+    localStorage.setItem("correo", correo);
+    document.getElementById("correoGuardado").textContent = correo;
+    alert("Correo guardado");
+});
+
+// ==============================
+// CARGAR TODO AL INICIAR
+// ==============================
+window.addEventListener("DOMContentLoaded", () => {
+    // Foto
+    const fotoGuardada = localStorage.getItem("foto");
+    if (fotoGuardada) {
+        fotoPreview.src = fotoGuardada;
+        fotoPreview.style.display = "block";
+    }
+
+    // Descripción
+    const desc = localStorage.getItem("descripcion");
+    if (desc) document.getElementById("descripcion").value = desc;
+
+    // Proyectos
+    const proyectos = localStorage.getItem("proyectos");
+    if (proyectos) {
+        document.getElementById("proyectosTexto").value = proyectos;
+        document.getElementById("proyectosGuardados").innerHTML = proyectos.replace(/\n/g, "<br>");
+    }
+
+    // Contacto
+    const contacto = localStorage.getItem("contacto");
+    if (contacto) {
+        document.getElementById("contactoTexto").value = contacto;
+        document.getElementById("contactoGuardado").textContent = contacto;
+    }
+
+    // Correo
+    const correo = localStorage.getItem(
+    "correo");
+    if (correo) {
+        document.getElementById("correo").value = correo;
+        document.getElementById("correoGuardado").textContent = correo;
+    }
+});
+</script>
+
+</body>
+</html>
